@@ -1,0 +1,140 @@
+formatAmount0{{define "specific"}}{{$cs := .CoinShortcut}}{{$bb := .Info.Blockbook}}{{$be := .Info.Backend}}{{$blocks := .Blocks}}{{$zcs := $be.ZerocoinSupply}}
+{{- if $bb.InitialSync -}}
+<h3 class="bg-danger text-white" style="padding: 20px;">Application is now in initial synchronization and does not provide any data.</h3>
+{{- end -}}
+{{- if not $bb.SyncMode -}}
+<h3 class="bg-warning text-white" style="padding: 20px;">Synchronization with backend is disabled, the state of index is not up to date.</h3>
+{{- end -}}
+{{- if .InternalExplorer -}}
+<h1 align="center">{{.CoinLabel}} Block Explorer</h1>
+<br>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 form-group">
+        <form id="search" action="/search" method="get">
+            <input name="q" type="text" class="form-control" placeholder="Search for block, transaction or address" focus="true">
+        </form>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+{{- end -}}
+<div class="row">
+    <div class="col-md-6">
+        <h3>Block index</h3>
+        <table class="table data-table">
+            <tbody>
+                <tr>
+                    <td style="width: 30%;">Last Indexed Block</td>
+                    <td class="data">
+                        {{- if .InternalExplorer -}}
+                            <a href="/block/{{$bb.BestHeight}}">{{$bb.BestHeight}}</a>
+                        {{else}}
+                            {{$bb.BestHeight}}
+                        {{- end -}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Best Block Hash</td>
+                    <td class="data ellipsis">{{$be.Bestblockhash}}</td>
+                </tr>
+                <tr>
+                    <td>Last Block Update</td>
+                    <td class="data">{{formatTime $bb.LastBlockTime}}</td>
+                </tr>
+                <tr>
+                    <td>Difficulty</td>
+                    <td class="data">{{$be.Difficulty}}</td>
+                </tr>
+                <tr>
+                    <td>Total Money Supply</td>
+                    <td class="data">{{formatAmount2 $be.MoneySupply}}&nbsp;{{$cs}}</td>
+                </tr>
+                <tr title="amount and % over total money supply">
+                    <td>Zerocoin Supply</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_TOT}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_TOT $be.MoneySupply}})</em></td>
+                </tr>
+                <tr>
+                    <td>Masternode Count</td>
+                    <td class="data ellipsis">{{$be.MasternodeCount}}</td>
+                </tr>
+                <tr>
+                    <td>Next Superblock</td>
+                    <td class="data">{{$be.NextSuperBlock}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3>Zerocoin supply</h3>
+        <table class="table data-table">
+            <tbody>
+                <tr title="amount and % over total supply">
+                    <td align="right"> <em>1-denom</em></td>
+                    <td align="center" class="data">{{formatDenom $zcs.Denom_1 1}}</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_1}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_1 $be.MoneySupply}})</em></td>
+                </tr>
+                <tr title="amount and % over total supply">
+                    <td align="right"> <em>5-denom</em></td>
+                    <td align="center" class="data">{{formatDenom $zcs.Denom_5 5}}</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_5}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_5 $be.MoneySupply}})</em></td>
+                </tr>
+                <tr title="amount and % over total supply">
+                    <td align="right"> <em>10-denom</em></td>
+                    <td align="center" class="data">{{formatDenom $zcs.Denom_10 10}}</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_10}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_10 $be.MoneySupply}})</em></td>
+                </tr>
+                <tr title="amount and % over total supply">
+                    <td align="right"> <em>50-denom</em></td>
+                    <td style="width: 10%;" align="center" class="data">{{formatDenom $zcs.Denom_50 50}}</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_50}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_50 $be.MoneySupply}})</em></td>
+                </tr>
+                <tr title="amount and % over total supply">
+                    <td align="right"> <em>100-denom</em></td>
+                    <td align="center" class="data">{{formatDenom $zcs.Denom_100 100}}</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_100}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_100 $be.MoneySupply}})</em></td>
+                </tr>
+                <tr title="amount and % over total supply">
+                    <td align="right"> <em>500-denom</em></td>
+                    <td align="center" class="data">{{formatDenom $zcs.Denom_500 500}}</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_500}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_500 $be.MoneySupply}})</em></td>
+                </tr>
+                <tr title="amount and % over total supply">
+                    <td align="right"> <em>1000-denom</em></td>
+                    <td align="center" class="data">{{formatDenom $zcs.Denom_1000 1000}}</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_1000}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_1000 $be.MoneySupply}})</em></td>
+                </tr>
+                <tr title="amount and % over total supply">
+                    <td align="right"> <em>5000-denom</em></td>
+                    <td align="center" class="data">{{formatDenom $zcs.Denom_5000 5000}}</td>
+                    <td><span class="data">{{formatAmount0 $zcs.Denom_5000}}&nbsp;z{{$cs}}</span>&nbsp;<em>({{getPercent $zcs.Denom_5000 $be.MoneySupply}})</em></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<h3 style="display: inline;">Last blocks</h3> &nbsp;(<a href='/blocks'>see all</a>)
+<div class="data-div">
+    <table class="table table-striped data-table table-hover">
+        <thead>
+            <tr>
+                <th style="width: 10%;">Height</th>
+                <th style="width: 48%;">Hash</th>
+                <th>Timestamp</th>
+                <th class="text-right" title="number of Transactions in block" style="width: 10%;">TXs</th>
+                <th class="text-right" title="size in Bytes" style="width: 10%;">Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{- range $b := $blocks.Blocks -}}
+            <tr>
+                <td><a href="/block/{{$b.Height}}">{{$b.Height}}</a></td>
+                <td class="ellipsis">{{$b.Hash}}</td>
+                <td>{{formatUnixTime $b.Time}}</td>
+                <td class="text-right">{{$b.Txs}}</td>
+                <td class="text-right">{{$b.Size}}</td>
+            </tr>
+            {{- end -}}
+        </tbody>
+    </table>
+</div>
+{{end}}
